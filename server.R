@@ -7,22 +7,19 @@ yahURL <- "http://ichart.finance.yahoo.com/table.csv?s="
 myplot <- function(...) plot(..., type="l", col="#66afe9", lwd="2",
           col.axis="grey", las=1)
 
-
 shinyServer(function(input, output) {
-  
-  # Runs every time a new user connects to the app
-  
-  
+    
   # Reactive stuff runs every time the user changes an input
   histdata <- reactive({
 
-    input$newTicker # React to Update button only
-    isolate(
+    input$newTicker # Reactive when Update button is clicked, not on other inputs
+    isolate( # Isolates all inputs except the Update button
+      
       # Basic error handler to suppress ugly errors if data is not available
       tryCatch({
-        d<-read.csv(paste(yahURL,input$ticker,sep=""))
+        d<-read.csv(paste(yahURL,input$ticker,sep="")) # reads stock data from Yahoo
         d$Date<-as.Date(as.character(d$Date))
-        d<-d[order(d$Date),]
+        d<-d[order(d$Date),] # Yahoo data comes in inverse date order..
         d
       }, warning = function(w) {
       }, error = function(e) {
@@ -33,13 +30,19 @@ shinyServer(function(input, output) {
   })
 
   output$stockchart <- renderPlot({
-    if (length(histdata())>0) {
+    if (length(histdata())>0) { # Procees only if data download was successful
       
       data<-histdata()
+      
+      # select data for specified date interval
       data<-data[(data$Date>=input$startdate & data$Date<=input$enddate),]
+      
       x<-data$Date
+      
+      # Calculate cumulative returns based on daily close or daily adjusted close
       if (input$adj) y<-data$Adj.Close/data$Adj.Close[1]
       else y<-data$Close/data$Close[nrow(data)]
+      
       myplot(x,(y-1)*100, main=paste(input$ticker, "'s cumulative returns between ", input$startdate, " and ", input$enddate,sep=""), xlab="", ylab="% Return")
     }
   })
@@ -48,9 +51,12 @@ shinyServer(function(input, output) {
     if (length(histdata())>0) {
       
       data<-histdata()
+      
       data<-data[(data$Date>=input$startdate & data$Date<=input$enddate),]
+      
       x<-data$Date
-      y<-data$Volume/1000000
+      y<-data$Volume/1000000 # in million shares
+      
       myplot(x,y, main=paste(input$ticker, "'s trading volume (millions) between ", input$startdate, " and ", input$enddate,sep=""), xlab="", ylab="Million Shares")
     }
   })
@@ -59,14 +65,17 @@ shinyServer(function(input, output) {
     if (length(histdata())>0) {
       
       data<-histdata()
+      
       data<-data[(data$Date>=input$startdate & data$Date<=input$enddate),]
+      
       x<-data$Date
-      y<-(data$High-data$Low)/data$Close
+      y<-(data$High-data$Low)/data$Close # Percentage difference
+      
       myplot(x,y*100, main=paste(input$ticker, "'s daily percentage range between ", input$startdate, " and ", input$enddate,sep=""), xlab="", ylab="% Range")
     }
   })
   
-  output$message <- renderText({
+  output$message <- renderText({ # Purely for error handling
     
     input$newTicker  # React to Update button only
     isolate(
