@@ -10,11 +10,11 @@ shinyUI(fluidPage(title="Stock Chart",
   helpText(
     strong("Instructions"),
     withTags(ol(
-      li("Type a stock ticker e.g. 'AAPL' or 'GOOG' in the stock sybol text field"),
+      li("Type a stock ticker e.g. 'AAPL' or 'GOOG' in the Stock Symbol text field"),
       li("Click on the Update Button"),
       li("Navigate the available charts by using the tabs"),
       li("Use the date inputs to visualize data for a specific interval of time"),
-      li("Toggle the utilization of adjusted clising prices for returns by using the checkbox")
+      li("Toggle the utilization of adjusted closing prices for returns by using the checkbox")
       ))
     ),
   
