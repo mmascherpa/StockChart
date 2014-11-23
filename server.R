@@ -41,7 +41,7 @@ shinyServer(function(input, output) {
       
       # Calculate cumulative returns based on daily close or daily adjusted close
       if (input$adj) y<-data$Adj.Close/data$Adj.Close[1]
-      else y<-data$Close/data$Close[nrow(data)]
+      else y<-data$Close/data$Close[1]
       
       myplot(x,(y-1)*100, main=paste(input$ticker, "'s cumulative returns between ", input$startdate, " and ", input$enddate,sep=""), xlab="", ylab="% Return")
     }
