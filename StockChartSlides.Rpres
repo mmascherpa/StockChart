@@ -1,0 +1,49 @@
+Stock Chart
+========================================================
+author: Marco Mascherpa
+date: November 19th, 2014
+font-family: 'Helvetica'
+transition: rotate
+
+Introduction
+========================================================
+
+Stock Chart is an application that displays charts over an interval of time for several stock metrics such as
+
+- Returns adjusted for dividends and stock splits
+- Trading volume in millions of stocks per day
+- Daily trading range in percentage of stock price
+
+Data Source
+========================================================
+
+- Data comes from Yahoo using *read.csv*
+- The example below shows data for ticker *SPY*
+
+```{r, echo=FALSE}
+YahooURL  <- "http://ichart.finance.yahoo.com/table.csv?s="
+ticker    <- "SPY"
+d<-read.csv(paste(YahooURL,ticker,sep=""))
+d$Date<-as.Date(as.character(d$Date))
+str(d)
+```
+
+Plots
+========================================================
+
+Based on data in the date range selected three charts are generated to display Returns, Volume and Range
+
+```{r}
+plot(d$Date, d$Volume, col="Blue",type="l")
+```
+
+Technicalities about Stock Chart
+========================================================
+- Downloads new data only when
+  - a new ticker is entered **and**
+  - the update button is pressed
+- Uses the *isolate()*  function to avoid reactive behavior on the ticker input
+- Displays plots using tabs (via the *tabPanel()* function )
+
+
+
