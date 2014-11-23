@@ -3,7 +3,8 @@ require(shiny)
 shinyUI(fluidPage(title="Stock Chart",
   wellPanel(
     h3("Stock Chart"),
-    p("An application to visualize equity returns, trading volume and trading range over a period of time")
+    p("An application to visualize equity returns, trading volume and trading range over a period of time"),
+    p("Source available at", a("https://github.com/mmascherpa/StockChart",href="https://github.com/mmascherpa/StockChart"))
   ),
   
   helpText(
