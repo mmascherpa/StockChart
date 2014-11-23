@@ -20,12 +20,16 @@ Data Source
 - Data comes from Yahoo using *read.csv*
 - The example below shows data for ticker *SPY*
 
-```{r, echo=FALSE}
-YahooURL  <- "http://ichart.finance.yahoo.com/table.csv?s="
-ticker    <- "SPY"
-d<-read.csv(paste(YahooURL,ticker,sep=""))
-d$Date<-as.Date(as.character(d$Date))
-str(d)
+
+```
+'data.frame':	5496 obs. of  7 variables:
+ $ Date     : Date, format: "2014-11-21" "2014-11-20" ...
+ $ Open     : num  208 204 205 204 204 ...
+ $ High     : num  208 206 206 206 205 ...
+ $ Low      : num  206 204 204 204 204 ...
+ $ Close    : num  207 206 205 206 204 ...
+ $ Volume   : int  142281500 72506900 82271200 75981700 80380500 80374200 85209900 90010300 54297600 66133300 ...
+ $ Adj.Close: num  207 206 205 206 204 ...
 ```
 
 Plots
@@ -33,11 +37,7 @@ Plots
 
 Based on data in the date range selected three charts are generated to display Returns, Volume and Range
 
-```{r, echo=FALSE}
-myplot <- function(...) plot(..., type="l", col="#66afe9", lwd="2",
-          col.axis="grey", las=1)
-myplot(d$Date, d$Volume/1000000, main=paste("SPY's trading volume (millions)",sep=""), xlab="", ylab="Million Shares")
-```
+![plot of chunk unnamed-chunk-2](StockChartSlides-figure/unnamed-chunk-2-1.png) 
 
 Technicalities about Stock Chart
 ========================================================
